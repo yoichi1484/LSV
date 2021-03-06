@@ -21,9 +21,6 @@ analogy_pairs = [["king", "queen"], ["man", "woman"]],
 ani = vi.animation(analogy_pairs)
 ani
 ```
-
-```
 <div align="center">
-<img src=https://github.com/ahclab/quantum/blob/master/docs/image/sampled_vectors_basic_1.gif "visualize_example3">
+<img src=https://github.com/yoichi1484/lsv/blob/main/docs/images/lsv_example1.gif "visualize_example">
 </div>
-```
