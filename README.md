@@ -1,4 +1,4 @@
-# LSV: Latent Space Visualizer
+LSV: Latent Space Visualizer
 ====
 
 # About
