@@ -71,6 +71,7 @@ class AnalogyVisualizer():
         self.ax.plot([0], [0], [0], marker="o", linestyle='None', color="k", alpha = 1) 
 
     def animation(self, analogy_pairs):
+        analogy_pairs = np.array(analogy_pairs)
         self.setup(analogy_pairs)
         self.fig = plt.figure(figsize = (8, 8))
         self.ax = self.fig.add_subplot(111, projection='3d')
