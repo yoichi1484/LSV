@@ -36,9 +36,9 @@ class AnalogyVisualizer():
     def _get_coordinates_of_pairs(self, pairs):
         coordinate = []
         for pair in pairs:
-            x = [v for v, w in zip(xs, self.words) if w in pair]
-            y = [v for v, w in zip(ys, self.words) if w in pair]
-            z = [v for v, w in zip(zs, self.words) if w in pair]
+            x = [v for v, w in zip(self.xs, self.words) if w in pair]
+            y = [v for v, w in zip(self.ys, self.words) if w in pair]
+            z = [v for v, w in zip(self.zs, self.words) if w in pair]
             assert x != []
             coordinate.append((x,y,z))
         return coordinate
