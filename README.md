@@ -2,7 +2,7 @@ LSV: Latent Space Visualizer
 ====
 A toolkit for visualizing latent space
 
-Demo page: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1xPM_jG0PpLHjdv2YT08bzX8X80OXRHGS?usp=sharing)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1xPM_jG0PpLHjdv2YT08bzX8X80OXRHGS?usp=sharing) [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE.txt)
 
 # Usage
 - To visualize a latent space, the three-dimensional latent space should be trained in advance before doing the following.
