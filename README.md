@@ -20,6 +20,7 @@ vi = lsv.visualizer.AnalogyVisualizer("[path of word2vec model trained with gens
 
 analogy_pairs = [["king", "queen"], ["man", "woman"]], 
 ani = vi.animation(analogy_pairs)
+ani.save('lsv_example1.mp4', writer="ffmpeg", dpi=100)
 ani
 ```
 <div align="center">
