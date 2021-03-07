@@ -22,6 +22,7 @@ class AnalogyVisualizer():
     def __init__(self, embedding, max_num_vecs = 20000):
         self.embedding = embedding
         words = embedding.wv.index2word
+        max_num_vecs = len(words) if len(words) < max_num_vecs
         indexes = random.sample(list(range(len(words))), max_num_vecs)
         self.words = [w for i, w in enumerate(words) if i in indexes]
         vecs = self.embedding[self.words]
