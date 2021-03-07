@@ -8,6 +8,7 @@ A toolkit for visualizing latent space
 - To visualize a latent space, the three-dimensional latent space should be trained in advance before doing the following.
 ```python
 import lsv
+from gensim.models import KeyedVectors
 
 # for Jupyter
 from IPython.display import HTML
@@ -16,7 +17,8 @@ rc('animation', html='jshtml')
 %config InlineBackend.figure_formats = {'png', 'retina'}
 %matplotlib inline
 
-vi = lsv.visualizer.AnalogyVisualizer("[path of word2vec model trained with gensim]")
+embedding = KeyedVectors.load_word2vec_format(PATH_WORDEMBEDDING)
+vi = lsv.visualizer.AnalogyVisualizer(embedding)
 
 analogy_pairs = [["king", "queen"], ["man", "woman"]], 
 ani = vi.animation(analogy_pairs)
