@@ -12,7 +12,7 @@ from gensim.models import Word2Vec
 
 dataset = api.load("text8")  
 embedding = Word2Vec(dataset, size=3, min_count=1000, 
-                 window=5, iter=100, sg=1, hs=0)
+                     window=5, iter=100, sg=1, hs=0)
 embedding.wv.save_word2vec_format("model.txt")   
 ```
 Visualize word analogy
