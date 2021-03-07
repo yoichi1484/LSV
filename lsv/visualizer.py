@@ -2,15 +2,16 @@ from mpl_toolkits.mplot3d import axes3d
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 try:
-  import japanize_matplotlib
+    import japanize_matplotlib
 except:
-  pass
+    pass
 
 #from IPython.display import HTML
 #from matplotlib import rc # for Jupyter
 #rc('animation', html='jshtml') # for Jupyter
 
 import numpy as np
+import random
 #from collections import OrderedDict
 from gensim.test.utils import common_texts
 from gensim.models import word2vec
@@ -18,29 +19,34 @@ from gensim.models import KeyedVectors
 
 
 class AnalogyVisualizer():
-    def __init__(self, embedding):
-        with open(embedding) as f:
-            wv = f.read().split('\n')[1:-1]
-        self.words = [w.split(' ')[0] for w in wv]
-        vecs = np.array([self._to_array(w.split(' ')[1:]) for w in wv])
+    def __init__(self, embedding, max_num_vecs = 20000):
+        self.embedding = embedding
+        words = embedding.wv.index2word
+        indexes = random.sample(list(range(len(words))), max_num_vecs)
+        self.words = [w for i, w in enumerate(words) if i in indexes]
+        vecs = self.embedding[self.words]
         self.xs, self.ys, self.zs = vecs.T[0], vecs.T[1], vecs.T[2]
 
     def _get_coordinates_of_annotation(self, analogy_pairs):
         coordinate = []
         analogy_words = analogy_pairs.flatten()
-        for word, x,y,z in zip(self.words, self.xs, self.ys, self.zs):
-            if word in analogy_words:
-                coordinate.append((word, x,y,z))
+        for word in analogy_words:
+            v = self.embedding[word]
+            assert len(v) == 3, "vector dimension should be three, but {}".format(len(v))
+            x, y, z = v.T[0], v.T[1], v.T[2]
+            coordinate.append((word, x,y,z))
         return coordinate
 
     def _get_coordinates_of_pairs(self, pairs):
         coordinate = []
         for pair in pairs:
-            x = [v for v, w in zip(self.xs, self.words) if w in pair]
-            y = [v for v, w in zip(self.ys, self.words) if w in pair]
-            z = [v for v, w in zip(self.zs, self.words) if w in pair]
-            assert x != []
-            coordinate.append((x,y,z))
+            for word in pair:
+                v = self.embedding[word]
+                assert len(v) == 3, "vector dimension should be three, but {}".format(len(v))
+                x, y, z = v.T[0], v.T[1], v.T[2]
+                #print(x,y,z)
+                #assert False
+                coordinate.append((x,y,z))
         return coordinate
 
     def _to_array(self, vecs):
@@ -57,11 +63,13 @@ class AnalogyVisualizer():
                      linestyle='None', color="green", alpha = 0.1) 
     
         # Plot analogy pairs
-        for x, y, z in self.coordinate1:
-            self.ax.plot(x, y, z, lw=2, color="red")
+        self.coordinate1 = np.array(self.coordinate1)
+        xs, ys, zs = self.coordinate1.T[0], self.coordinate1.T[1], self.coordinate1.T[2]
+        self.ax.plot(xs, ys, zs, lw=2, color="red")
         
-        for x, y, z in self.coordinate2:
-            self.ax.plot(x, y, z, lw=2, color="blue")
+        self.coordinate2 = np.array(self.coordinate2)
+        xs, ys, zs = self.coordinate2.T[0], self.coordinate2.T[1], self.coordinate2.T[2]
+        self.ax.plot(xs, ys, zs, lw=2, color="blue")
         
         for word, x, y, z in self.coordinate3:
             self.ax.text(x, y, z, word)
