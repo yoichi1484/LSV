@@ -20,7 +20,7 @@ rc('animation', html='jshtml')
 embedding = KeyedVectors.load_word2vec_format(PATH_WORDEMBEDDING)
 vi = lsv.visualizer.AnalogyVisualizer(embedding)
 
-analogy_pairs = [["king", "queen"], ["man", "woman"]], 
+analogy_pairs = [["king", "queen"], ["man", "woman"]]
 ani = vi.animation(analogy_pairs)
 ani.save('lsv_example1.mp4', writer="ffmpeg", dpi=100)
 ani
