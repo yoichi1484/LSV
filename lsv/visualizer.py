@@ -19,15 +19,24 @@ from gensim.models import KeyedVectors
 
 
 class AnalogyVisualizer():
-    def __init__(self, embedding, max_num_vecs = 20000):
+    def __init__(self, embedding, max_num_vecs = 20000, word_freq = None):
         self.embedding = embedding
         words = embedding.wv.index2word
+        
+        # Sampling word vectors
         max_num_vecs = len(words) if len(words) < max_num_vecs else max_num_vecs
         indexes = random.sample(list(range(len(words))), max_num_vecs)
         self.words = [w for i, w in enumerate(words) if i in indexes]
         vecs = self.embedding[self.words]
         self.xs, self.ys, self.zs = vecs.T[0], vecs.T[1], vecs.T[2]
         self.plot_analogy_pairs = False
+        
+        # Use continuous color or not
+        if word_freq is None:
+            self.word_freq = word_freq
+        else:
+            self.word_freq = [p for i, p in enumerate(word_freq) if i in indexes]
+            
 
     def _get_coordinates_of_annotation(self, analogy_pairs):
         coordinate = []
@@ -60,8 +69,14 @@ class AnalogyVisualizer():
 
     def plot(self):
         # Plot vectors
-        self.ax.plot(self.xs, self.ys, self.zs, marker="o", 
-                     linestyle='None', color="green", alpha = 0.1) 
+        if self.word_freq is None:
+            #self.ax.plot(self.xs, self.ys, self.zs, marker="o", 
+            #             linestyle='None', color="green", alpha = 0.1) 
+            self.ax.scatter3D(self.xs, self.ys, self.zs, 
+                              color="green", alpha = 0.1)
+        else:
+            self.ax.scatter3D(self.xs, self.ys, self.zs, 
+                              c=self.word_freq, cmap='jet', alpha = 0.1)
     
         # Plot analogy pairs
         if self.plot_analogy_pairs:
