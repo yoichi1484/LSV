@@ -27,6 +27,7 @@ class AnalogyVisualizer():
         self.words = [w for i, w in enumerate(words) if i in indexes]
         vecs = self.embedding[self.words]
         self.xs, self.ys, self.zs = vecs.T[0], vecs.T[1], vecs.T[2]
+        self.plot_analogy_pairs = False
 
     def _get_coordinates_of_annotation(self, analogy_pairs):
         coordinate = []
@@ -45,8 +46,6 @@ class AnalogyVisualizer():
                 v = self.embedding[word]
                 assert len(v) == 3, "vector dimension should be three, but {}".format(len(v))
                 x, y, z = v.T[0], v.T[1], v.T[2]
-                #print(x,y,z)
-                #assert False
                 coordinate.append((x,y,z))
         return coordinate
 
@@ -60,35 +59,58 @@ class AnalogyVisualizer():
         return self.fig, 
 
     def plot(self):
+        # Plot vectors
         self.ax.plot(self.xs, self.ys, self.zs, marker="o", 
                      linestyle='None', color="green", alpha = 0.1) 
     
         # Plot analogy pairs
-        self.coordinate1 = np.array(self.coordinate1)
-        xs, ys, zs = self.coordinate1.T[0], self.coordinate1.T[1], self.coordinate1.T[2]
-        self.ax.plot(xs, ys, zs, lw=2, color="red")
+        if self.plot_analogy_pairs:
+            self.coordinate1 = np.array(self.coordinate1)
+            xs, ys, zs = self.coordinate1.T[0], self.coordinate1.T[1], self.coordinate1.T[2]
+            self.ax.plot(xs[:2], ys[:2], zs[:2], lw=2, color="red")
+            self.ax.plot(xs[2:], ys[2:], zs[2:], lw=2, color="red")
+            self.ax.plot(xs[::2], ys[::2], zs[::2], lw=2, color="blue")
+            self.ax.plot(xs[1::2], ys[1::2], zs[1::2], lw=2, color="blue")
         
-        self.coordinate2 = np.array(self.coordinate2)
-        xs, ys, zs = self.coordinate2.T[0], self.coordinate2.T[1], self.coordinate2.T[2]
-        self.ax.plot(xs, ys, zs, lw=2, color="blue")
+            #self.coordinate2 = np.array(self.coordinate2)
+            #xs, ys, zs = self.coordinate2.T[0], self.coordinate2.T[1], self.coordinate2.T[2]
+            #self.ax.plot(xs, ys, zs, lw=2, color="blue")
         
-        for word, x, y, z in self.coordinate3:
-            self.ax.text(x, y, z, word)
-            self.ax.plot([0., x], [0., y], [0., z], lw=1, color="k", linestyle="dashed")
+            # Plot words
+            for word, x, y, z in self.coordinate3:
+                self.ax.text(x, y, z, word)
+                self.ax.plot([0., x], [0., y], [0., z], lw=1, color="k", linestyle="dashed")
 
+        # Plot origin
         self.ax.text(0,0,0, "O") # Origin
         self.ax.plot([0], [0], [0], marker="o", linestyle='None', color="k", alpha = 1) 
+        
+    def setup(self, analogy_pairs):
+        self.coordinate1 = self._get_coordinates_of_pairs(analogy_pairs)
+        #self.coordinate2 = self._get_coordinates_of_pairs(analogy_pairs.T)
+        self.coordinate3 = self._get_coordinates_of_annotation(analogy_pairs)
 
-    def animation(self, analogy_pairs):
-        analogy_pairs = np.array(analogy_pairs)
-        self.setup(analogy_pairs)
+    def animation(self, analogy_pairs=None):
+        if analogy_pairs is None:
+            self.plot_analogy_pairs = False
+        else:
+            self.plot_analogy_pairs = True
+            analogy_pairs = np.array(analogy_pairs)
+            self.setup(analogy_pairs)
         self.fig = plt.figure(figsize = (8, 8))
         self.ax = self.fig.add_subplot(111, projection='3d')
         ani = animation.FuncAnimation(self.fig, self._update, #init_func=self.init,
                                        frames=100, interval=100, blit=True)
         return ani
 
-    def setup(self, analogy_pairs):
-        self.coordinate1 = self._get_coordinates_of_pairs(analogy_pairs)
-        self.coordinate2 = self._get_coordinates_of_pairs(analogy_pairs.T)
-        self.coordinate3 = self._get_coordinates_of_annotation(analogy_pairs)
+    def figure(self, analogy_pairs=None):
+        if analogy_pairs is None:
+            self.plot_analogy_pairs = False
+        else:
+            self.plot_analogy_pairs = True
+            analogy_pairs = np.array(analogy_pairs)
+            self.setup(analogy_pairs)
+        self.fig = plt.figure(figsize = (8, 8))
+        self.ax = self.fig.add_subplot(111, projection='3d')
+        self.plot()
+        return self.fig, self.ax
