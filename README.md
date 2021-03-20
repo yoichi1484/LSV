@@ -29,9 +29,21 @@ rc('animation', html='jshtml')
 
 embedding = KeyedVectors.load_word2vec_format("model.txt")
 vi = lsv.visualizer.AnalogyVisualizer(embedding)
-
+```
+Plot word vectors
+```python
+vi.figure()
+```
+Make a 3D animation
+```python
+vi.animation()
+```
+Visualize analogy pairs
+```python
 analogy_pairs = [["king", "queen"], ["man", "woman"]]
 ani = vi.animation(analogy_pairs)
+
+# Save the animation
 ani.save('lsv_example1.mp4', writer="ffmpeg", dpi=100)
 ani
 ```
