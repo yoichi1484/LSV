@@ -6,6 +6,7 @@ A toolkit for visualizing latent space
 
 # Usage
 To visualize a latent space, the three-dimensional latent space should be trained in advance.
+Alternatively, you can use the pre-trained embeddings in ```data/sgns_text8_3d.txt```.
 ```python
 import gensim.downloader as api
 from gensim.models import Word2Vec
