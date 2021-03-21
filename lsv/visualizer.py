@@ -30,7 +30,7 @@ class AnalogyVisualizer():
             self.word_freq = word_freq
         else:
             self.words = [w for i, w in enumerate(words) if i in indexes]
-            self.word_freq = [np.log(word_freq[word]) for word in self.words]
+            self.word_freq = [word_freq[word] for word in self.words]
         
         # vectors
         vecs = self.embedding[self.words]
@@ -66,8 +66,10 @@ class AnalogyVisualizer():
         self.ax.cla()
         self.plot()
         self.ax.view_init(elev=30., azim=3.6*i)
-        if not self.word_freq is None and i==3:
-            self.fig.colorbar(self.sc, shrink=0.5, aspect=20, ax=self.ax)
+        if not self.word_freq is None and self.pltcolorbar:
+            cbar = self.fig.colorbar(self.sc, shrink=0.5, aspect=20, ax=self.ax, norm=LogNorm(vmin=1e1, vmax=1e5))
+            cbar.set_clim(1e1, 1e5)
+            self.pltcolorbar = False
         return self.fig, 
 
     def plot(self):
@@ -117,6 +119,8 @@ class AnalogyVisualizer():
             self.setup(analogy_pairs)
         self.fig = plt.figure(figsize = (8, 8))
         self.ax = self.fig.add_subplot(111, projection='3d')
+        if not self.word_freq is None:
+            self.pltcolorbar = True
         ani = animation.FuncAnimation(self.fig, self._update, #init_func=self.init,
                                        frames=100, interval=100, blit=True)
         return ani
@@ -130,21 +134,7 @@ class AnalogyVisualizer():
             self.setup(analogy_pairs)
         self.fig = plt.figure(figsize = (8, 8))
         self.ax = self.fig.add_subplot(111, projection='3d')
+        if not self.word_freq is None:
+            self.pltcolorbar = True
         self.plot()
         return self.fig, self.ax
-    
-    
-    def modify_cax(self, ax, cax, orientation='vertical'):
-        '''
-        Set colorbar axis same as plot.
-        Parameters:
-            ax: ax = plt.gca()
-            cax: cax = plt.colorbar()
-            orientataion: vertical or horizontal
-        '''
-        axp = ax.get_position()
-        caxp = cax.ax.get_position()
-        if orientation=='vertical':
-            cax.ax.set_position([caxp.x0, axp.y0, caxp.x1 - caxp.x0, axp.y1 - axp.y0])
-        elif orientation=='horizontal':
-            cax.ax.set_position([axp.x0, caxp.y0, axp.x1 - axp.x0, caxp.y1 - caxp.y0])
