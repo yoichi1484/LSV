@@ -35,6 +35,10 @@ Plot word vectors
 ```python
 vi.figure()
 ```
+<div align="center">
+<img src=https://github.com/yoichi1484/lsv/blob/main/docs/images/lsv_example1.jpg "visualize_example">
+</div>
+
 Make a 3D animation
 ```python
 vi.animation()
