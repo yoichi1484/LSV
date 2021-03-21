@@ -51,3 +51,10 @@ ani
 <div align="center">
 <img src=https://github.com/yoichi1484/lsv/blob/main/docs/images/lsv_example1.gif "visualize_example">
 </div>
+
+
+```python
+word_freq = {"the":123456, "one":56789, ...}
+vi = lsv.visualizer.AnalogyVisualizer(emb, word_freq)
+vi.animation()
+```
