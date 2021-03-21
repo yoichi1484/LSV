@@ -6,10 +6,6 @@ try:
 except:
     pass
 
-#from IPython.display import HTML
-#from matplotlib import rc # for Jupyter
-#rc('animation', html='jshtml') # for Jupyter
-
 import numpy as np
 import random
 #from collections import OrderedDict
@@ -22,21 +18,26 @@ class AnalogyVisualizer():
     def __init__(self, embedding, max_num_vecs = 20000, word_freq = None):
         self.embedding = embedding
         words = embedding.wv.index2word
+        if not word_freq is None:
+            words = [word for word in words if word in word_freq]
         
         # Sampling word vectors
         max_num_vecs = len(words) if len(words) < max_num_vecs else max_num_vecs
         indexes = random.sample(list(range(len(words))), max_num_vecs)
-        self.words = [w for i, w in enumerate(words) if i in indexes]
-        vecs = self.embedding[self.words]
-        self.xs, self.ys, self.zs = vecs.T[0], vecs.T[1], vecs.T[2]
-        self.plot_analogy_pairs = False
         
-        # Use continuous color or not
         if word_freq is None:
+            self.words = [w for i, w in enumerate(words) if i in indexes]
             self.word_freq = word_freq
         else:
-            self.word_freq = [p for i, p in enumerate(word_freq) if i in indexes]
-            
+            self.words = [w for i, w in enumerate(words) if i in indexes]
+            self.word_freq = [np.log(word_freq[word]) for word in self.words]
+        
+        # vectors
+        vecs = self.embedding[self.words]
+        
+        # x,y,z
+        self.xs, self.ys, self.zs = vecs.T[0], vecs.T[1], vecs.T[2]
+        self.plot_analogy_pairs = False
 
     def _get_coordinates_of_annotation(self, analogy_pairs):
         coordinate = []
@@ -65,18 +66,20 @@ class AnalogyVisualizer():
         self.ax.cla()
         self.plot()
         self.ax.view_init(elev=30., azim=3.6*i)
+        if not self.word_freq is None and i==3:
+            self.fig.colorbar(self.sc, shrink=0.5, aspect=20, ax=self.ax)
         return self.fig, 
 
     def plot(self):
         # Plot vectors
         if self.word_freq is None:
-            #self.ax.plot(self.xs, self.ys, self.zs, marker="o", 
-            #             linestyle='None', color="green", alpha = 0.1) 
-            self.ax.scatter3D(self.xs, self.ys, self.zs, 
-                              color="green", alpha = 0.1)
+            self.ax.plot(self.xs, self.ys, self.zs, marker="o", 
+                         linestyle='None', color="green", alpha = 0.1) 
+            #self.ax.scatter3D(self.xs, self.ys, self.zs, 
+            #                  color="green", alpha = 0.1)
         else:
-            self.ax.scatter3D(self.xs, self.ys, self.zs, 
-                              c=self.word_freq, cmap='jet', alpha = 0.1)
+            self.sc = self.ax.scatter3D(self.xs, self.ys, self.zs, 
+                              c=self.word_freq, cmap='jet')#, alpha = 0.1)
     
         # Plot analogy pairs
         if self.plot_analogy_pairs:
@@ -129,3 +132,19 @@ class AnalogyVisualizer():
         self.ax = self.fig.add_subplot(111, projection='3d')
         self.plot()
         return self.fig, self.ax
+    
+    
+    def modify_cax(self, ax, cax, orientation='vertical'):
+        '''
+        Set colorbar axis same as plot.
+        Parameters:
+            ax: ax = plt.gca()
+            cax: cax = plt.colorbar()
+            orientataion: vertical or horizontal
+        '''
+        axp = ax.get_position()
+        caxp = cax.ax.get_position()
+        if orientation=='vertical':
+            cax.ax.set_position([caxp.x0, axp.y0, caxp.x1 - caxp.x0, axp.y1 - axp.y0])
+        elif orientation=='horizontal':
+            cax.ax.set_position([axp.x0, caxp.y0, axp.x1 - axp.x0, caxp.y1 - caxp.y0])
