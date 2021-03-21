@@ -39,7 +39,7 @@ Make a 3D animation
 ```python
 vi.animation()
 ```
-Visualize analogy pairs
+Visualization of analogy pairs
 ```python
 analogy_pairs = [["king", "queen"], ["man", "woman"]]
 ani = vi.animation(analogy_pairs)
@@ -52,7 +52,7 @@ ani
 <img src=https://github.com/yoichi1484/lsv/blob/main/docs/images/lsv_example1.gif "visualize_example">
 </div>
 
-
+Visualization of word frequency
 ```python
 word_freq = {"the":123456, "one":56789, ...}
 vi = lsv.visualizer.AnalogyVisualizer(emb, word_freq)
