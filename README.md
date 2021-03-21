@@ -44,7 +44,7 @@ Make a 3D animation
 vi.animation()
 ```
 <div align="center">
-<img src=https://github.com/yoichi1484/lsv/blob/main/docs/images/lsv_example1.gif "visualize_example" width="70%" height="70%">
+<img src=https://github.com/yoichi1484/lsv/blob/main/docs/images/lsv_example1.gif "visualize_example" width="50%" height="50%">
 </div>
 
 Visualization of analogy pairs
@@ -57,7 +57,7 @@ ani.save('lsv_example1.mp4', writer="ffmpeg", dpi=100)
 ani
 ```
 <div align="center">
-<img src=https://github.com/yoichi1484/lsv/blob/main/docs/images/lsv_example2.gif "visualize_example" width="70%" height="70%">
+<img src=https://github.com/yoichi1484/lsv/blob/main/docs/images/lsv_example2.gif "visualize_example" width="50%" height="50%">
 </div>
 
 Visualization of word frequency. The axis of the color bar is a log scale.
@@ -67,5 +67,5 @@ vi = lsv.visualizer.AnalogyVisualizer(emb, word_freq)
 vi.animation()
 ```
 <div align="center">
-<img src=https://github.com/yoichi1484/lsv/blob/main/docs/images/lsv_example3.gif "visualize_example" width="70%" height="70%">
+<img src=https://github.com/yoichi1484/lsv/blob/main/docs/images/lsv_example3.gif "visualize_example" width="50%" height="50%">
 </div>
