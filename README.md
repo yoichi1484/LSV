@@ -52,7 +52,7 @@ ani
 <img src=https://github.com/yoichi1484/lsv/blob/main/docs/images/lsv_example1.gif "visualize_example">
 </div>
 
-Visualization of word frequency
+Visualization of word frequency. The axis of the color bar is a log scale.
 ```python
 word_freq = {"the":123456, "one":56789, ...}
 vi = lsv.visualizer.AnalogyVisualizer(emb, word_freq)
