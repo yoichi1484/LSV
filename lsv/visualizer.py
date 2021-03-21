@@ -1,6 +1,7 @@
 from mpl_toolkits.mplot3d import axes3d
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+from matplotlib.colors import LogNorm
 try:
     import japanize_matplotlib
 except:
@@ -30,7 +31,7 @@ class AnalogyVisualizer():
             self.word_freq = word_freq
         else:
             self.words = [w for i, w in enumerate(words) if i in indexes]
-            self.word_freq = [word_freq[word] for word in self.words]
+            self.word_freq = np.array([np.log10(word_freq[word]) for word in self.words])
         
         # vectors
         vecs = self.embedding[self.words]
@@ -67,8 +68,9 @@ class AnalogyVisualizer():
         self.plot()
         self.ax.view_init(elev=30., azim=3.6*i)
         if not self.word_freq is None and self.pltcolorbar:
-            cbar = self.fig.colorbar(self.sc, shrink=0.5, aspect=20, ax=self.ax, norm=LogNorm(vmin=1e1, vmax=1e5))
-            cbar.set_clim(1e1, 1e5)
+            cbar = self.fig.colorbar(self.sc, shrink=0.5, aspect=20, ax=self.ax, 
+                                     norm=LogNorm(vmin=self.word_freq.min(), vmax=self.word_freq.max())) 
+            cbar.set_clim(self.word_freq.min(), self.word_freq.max())
             self.pltcolorbar = False
         return self.fig, 
 
