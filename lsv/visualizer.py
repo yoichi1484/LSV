@@ -139,4 +139,9 @@ class AnalogyVisualizer():
         if not self.word_freq is None:
             self.pltcolorbar = True
         self.plot()
+        if not self.word_freq is None and self.pltcolorbar:
+            cbar = self.fig.colorbar(self.sc, shrink=0.5, aspect=20, ax=self.ax, 
+                                     norm=LogNorm(vmin=self.word_freq.min(), vmax=self.word_freq.max())) 
+            cbar.set_clim(self.word_freq.min(), self.word_freq.max())
+            self.pltcolorbar = False
         return self.fig, self.ax
