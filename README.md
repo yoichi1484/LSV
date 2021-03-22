@@ -63,7 +63,7 @@ ani
 Visualization of word frequency. The axis of the color bar is a log scale.
 ```python
 word_freq = {"the":123456, "one":56789, ...}
-vi = lsv.visualizer.AnalogyVisualizer(emb, word_freq)
+vi = lsv.visualizer.AnalogyVisualizer(emb, word_freq = word_freq)
 vi.animation()
 ```
 <div align="center">
