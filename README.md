@@ -21,13 +21,6 @@ Visualize word analogy
 import lsv
 from gensim.models import KeyedVectors
 
-# for Jupyter
-from IPython.display import HTML
-from matplotlib import rc 
-rc('animation', html='jshtml') 
-%config InlineBackend.figure_formats = {'png', 'retina'}
-%matplotlib inline
-
 embedding = KeyedVectors.load_word2vec_format("model.txt")
 vi = lsv.visualizer.AnalogyVisualizer(embedding)
 ```
@@ -50,11 +43,7 @@ vi.animation()
 Visualization of analogy pairs
 ```python
 analogy_pairs = [["king", "queen"], ["man", "woman"]]
-ani = vi.animation(analogy_pairs)
-
-# Save the animation
-ani.save('lsv_example1.mp4', writer="ffmpeg", dpi=100)
-ani
+vi.animation(analogy_pairs).save('latent_space1.mp4', writer="ffmpeg", dpi=100)
 ```
 <div align="center">
 <img src=https://github.com/yoichi1484/lsv/blob/main/docs/images/lsv_example2.gif "visualize_example" width="50%" height="50%">
@@ -64,7 +53,7 @@ Visualization of word frequency. The axis of the color bar is a log scale.
 ```python
 word_freq = {"the":123456, "one":56789, ...}
 vi = lsv.visualizer.AnalogyVisualizer(emb, word_freq = word_freq)
-vi.animation()
+vi.animation().save('latent_space2.mp4', writer="ffmpeg", dpi=100)
 ```
 <div align="center">
 <img src=https://github.com/yoichi1484/lsv/blob/main/docs/images/lsv_example3.gif "visualize_example" width="50%" height="50%">
