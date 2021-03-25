@@ -77,22 +77,22 @@ class AnalogyVisualizer():
     def plot(self):
         # Plot vectors
         if self.word_freq is None:
-            self.ax.plot(self.xs, self.ys, self.zs, marker="o", 
-                         linestyle='None', color="green", alpha = 0.1) 
+            self.ax.plot(self.xs, self.ys, self.zs, 
+                         linestyle='None', color="green", marker='.', alpha = 0.1)
             #self.ax.scatter3D(self.xs, self.ys, self.zs, 
             #                  color="green", alpha = 0.1)
         else:
             self.sc = self.ax.scatter3D(self.xs, self.ys, self.zs, 
-                              c=self.word_freq, cmap='jet')#, alpha = 0.1)
+                              c=self.word_freq, cmap='jet', s=0.5, marker='.')#, alpha = 0.1)
     
         # Plot analogy pairs
         if self.plot_analogy_pairs:
             self.coordinate1 = np.array(self.coordinate1)
             xs, ys, zs = self.coordinate1.T[0], self.coordinate1.T[1], self.coordinate1.T[2]
-            self.ax.plot(xs[:2], ys[:2], zs[:2], lw=2, color="red")
-            self.ax.plot(xs[2:], ys[2:], zs[2:], lw=2, color="red")
-            self.ax.plot(xs[::2], ys[::2], zs[::2], lw=2, color="blue")
-            self.ax.plot(xs[1::2], ys[1::2], zs[1::2], lw=2, color="blue")
+            self.ax.plot(xs[:2], ys[:2], zs[:2], lw=2, color="red", alpha = 0.6)
+            self.ax.plot(xs[2:], ys[2:], zs[2:], lw=2, color="red", alpha = 0.6)
+            self.ax.plot(xs[::2], ys[::2], zs[::2], lw=2, color="blue", alpha = 0.6)
+            self.ax.plot(xs[1::2], ys[1::2], zs[1::2], lw=2, color="blue", alpha = 0.6)
         
             #self.coordinate2 = np.array(self.coordinate2)
             #xs, ys, zs = self.coordinate2.T[0], self.coordinate2.T[1], self.coordinate2.T[2]
@@ -101,11 +101,11 @@ class AnalogyVisualizer():
             # Plot words
             for word, x, y, z in self.coordinate3:
                 self.ax.text(x, y, z, word)
-                self.ax.plot([0., x], [0., y], [0., z], lw=1, color="k", linestyle="dashed")
+                self.ax.plot([0., x], [0., y], [0., z], lw=1, color="k", linestyle="dashed", alpha = 0.1)
 
         # Plot origin
         self.ax.text(0,0,0, "O") # Origin
-        self.ax.plot([0], [0], [0], marker="o", linestyle='None', color="k", alpha = 1) 
+        self.ax.plot([0], [0], [0], marker="o", linestyle='None', color="k", alpha = 0.6)
         
     def setup(self, analogy_pairs):
         self.coordinate1 = self._get_coordinates_of_pairs(analogy_pairs)
